@@ -1,134 +1,103 @@
-import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting } from 'obsidian';
-
-// Remember to rename these classes and interfaces!
-
-interface MyPluginSettings {
-	mySetting: string;
-}
-
-const DEFAULT_SETTINGS: MyPluginSettings = {
-	mySetting: 'default'
-}
-
-export default class MyPlugin extends Plugin {
-	settings: MyPluginSettings;
-
+import {
+	App,
+	Editor,
+	MarkdownView,
+	Modal,
+	Notice,
+	Plugin,
+	PluginSettingTab,
+	Setting,
+  } from "obsidian";
+  
+  interface ObsidianNiftyLinksPluginSettings { }
+  
+  const DEFAULT_SETTINGS: ObsidianNiftyLinksPluginSettings = {};
+  
+  export default class ObsidianNiftyLinksPlugin extends Plugin {
+	settings: ObsidianNiftyLinksPlugin;
+  
 	async onload() {
-		await this.loadSettings();
-
-		// This creates an icon in the left ribbon.
-		const ribbonIconEl = this.addRibbonIcon('dice', 'Sample Plugin', (evt: MouseEvent) => {
-			// Called when the user clicks the icon.
-			new Notice('This is a notice!');
-		});
-		// Perform additional things with the ribbon
-		ribbonIconEl.addClass('my-plugin-ribbon-class');
-
-		// This adds a status bar item to the bottom of the app. Does not work on mobile apps.
-		const statusBarItemEl = this.addStatusBarItem();
-		statusBarItemEl.setText('Status Bar Text');
-
-		// This adds a simple command that can be triggered anywhere
-		this.addCommand({
-			id: 'open-sample-modal-simple',
-			name: 'Open sample modal (simple)',
-			callback: () => {
-				new SampleModal(this.app).open();
-			}
-		});
-		// This adds an editor command that can perform some operation on the current editor instance
-		this.addCommand({
-			id: 'sample-editor-command',
-			name: 'Sample editor command',
-			editorCallback: (editor: Editor, view: MarkdownView) => {
-				console.log(editor.getSelection());
-				editor.replaceSelection('Sample Editor Command');
-			}
-		});
-		// This adds a complex command that can check whether the current state of the app allows execution of the command
-		this.addCommand({
-			id: 'open-sample-modal-complex',
-			name: 'Open sample modal (complex)',
-			checkCallback: (checking: boolean) => {
-				// Conditions to check
-				const markdownView = this.app.workspace.getActiveViewOfType(MarkdownView);
-				if (markdownView) {
-					// If checking is true, we're simply "checking" if the command can be run.
-					// If checking is false, then we want to actually perform the operation.
-					if (!checking) {
-						new SampleModal(this.app).open();
-					}
-
-					// This command will only show up in Command Palette when the check function returns true
-					return true;
-				}
-			}
-		});
-
-		// This adds a settings tab so the user can configure various aspects of the plugin
-		this.addSettingTab(new SampleSettingTab(this.app, this));
-
-		// If the plugin hooks up any global DOM events (on parts of the app that doesn't belong to this plugin)
-		// Using this function will automatically remove the event listener when this plugin is disabled.
-		this.registerDomEvent(document, 'click', (evt: MouseEvent) => {
-			console.log('click', evt);
-		});
-
-		// When registering intervals, this function will automatically clear the interval when the plugin is disabled.
-		this.registerInterval(window.setInterval(() => console.log('setInterval'), 5 * 60 * 1000));
+	  console.log("loading plugin");
+  
+	  await this.loadSettings();
+  
+	  this.addRibbonIcon("link", "Nifty Links", () => {
+		let activeView = this.app.workspace.getActiveViewOfType(MarkdownView);
+		if (activeView) {
+		  let editor = activeView.editor;
+		  this.urlToIframe(editor);
+		}
+	  });
+  
+	  this.addCommand({
+		id: "create-nifty-links",
+		name: "Create Nifty Link",
+		editorCheckCallback: (checking: boolean, editor: Editor) => {
+		  if (!checking) {
+			this.urlToIframe(editor);
+		  }
+		  return true;
+		},
+	  });
 	}
-
+  
 	onunload() {
-
+		  console.log("unloading plugin");
+	  }
+	  isUrl(text) {
+		const urlRegex = new RegExp("^(http:\\/\\/www\\.|https:\\/\\/www\\.|http:\\/\\/|https:\\/\\/)?[a-z0-9]+([\\-.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$");
+		return urlRegex.test(text);
+	  }
+  
+	  urlToIframe(editor) {
+		let selectedText = editor.somethingSelected()
+			? editor.getSelection().trim()
+			: false;
+		if (selectedText && this.isUrl(selectedText)) {
+			const url = selectedText;
+			ajaxPromise({        
+				url: `http://iframely.server.crestify.com/iframely?url=${url}`,
+			}).then((res) => {
+				const data = JSON.parse(res);
+				let imageLink = data.links.find((value) => value.type.startsWith("image") && value.rel.includes('twitter'));
+				imageLink = imageLink ? imageLink.href : '';
+				let cardTextStyle = imageLink ? "" : ' style="width: 100%;"';
+				let imageContainerHTML = imageLink ? `
+					<div class="nifty-link-image-container">
+						<div class="nifty-link-image" style="background-image: url('${imageLink}')">
+					</div>
+					</div>
+					` : '';
+				let iconLink = data.links.find((value) => value.type.startsWith("image") && value.rel.includes('icon'));
+				iconLink = iconLink ? iconLink.href : '';
+				editor.replaceSelection(`
+  <div class="nifty-link-card-container">
+	<a class="nifty-link-card" href="${url}" target="_blank">
+		<div class="nifty-link-card-text"${cardTextStyle}>
+			<div class="nifty-link-card-title">${(data.meta.title || "").replace(/\s{3,}/g, ' ').trim()}</div>
+			<div class="nifty-link-card-description">${(data.meta.description || "").replace(/\s{3,}/g, ' ').trim()}</div>
+			<div class="nifty-link-href">
+			<img class="nifty-link-icon" src="${iconLink}">
+				${url}
+			</div>
+		</div>
+		${imageContainerHTML}
+	</a>
+  </div>
+  
+  `);
+			});
+		}
+		else {
+			new obsidian.Notice("Select a URL to convert to nifty link.");
+		}
 	}
-
+  
 	async loadSettings() {
-		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+	  this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
 	}
-
+  
 	async saveSettings() {
-		await this.saveData(this.settings);
+	  await this.saveData(this.settings);
 	}
-}
-
-class SampleModal extends Modal {
-	constructor(app: App) {
-		super(app);
-	}
-
-	onOpen() {
-		const {contentEl} = this;
-		contentEl.setText('Woah!');
-	}
-
-	onClose() {
-		const {contentEl} = this;
-		contentEl.empty();
-	}
-}
-
-class SampleSettingTab extends PluginSettingTab {
-	plugin: MyPlugin;
-
-	constructor(app: App, plugin: MyPlugin) {
-		super(app, plugin);
-		this.plugin = plugin;
-	}
-
-	display(): void {
-		const {containerEl} = this;
-
-		containerEl.empty();
-
-		new Setting(containerEl)
-			.setName('Setting #1')
-			.setDesc('It\'s a secret')
-			.addText(text => text
-				.setPlaceholder('Enter your secret')
-				.setValue(this.plugin.settings.mySetting)
-				.onChange(async (value) => {
-					this.plugin.settings.mySetting = value;
-					await this.plugin.saveSettings();
-				}));
-	}
-}
+  }  

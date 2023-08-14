@@ -1,8 +1,88 @@
-/*
-
-This CSS file will be included with your plugin, and
-available in the app when your plugin is enabled.
-
-If your plugin does not need CSS, delete this file.
-
-*/
+.nifty-link-card {
+    border: 1px solid var(--background-modifier-border);
+    margin-right: 0;
+    margin-left: 0;
+    margin-bottom: 0px;
+    border-radius: 3px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    text-decoration: none !important;
+    background-color: var(--background-primary);
+    height: 106px;
+  }
+  
+  .nifty-link-card .nifty-link-image-container {
+      width: 40%;
+      overflow: hidden;
+      border-right: 1px solid var(--background-modifier-border);
+      padding-top: 0px;
+      height: 100%;
+  }
+  
+  .nifty-link-card .nifty-link-image {
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-color: var(--background-secondary);
+    height: 100%;
+  }
+  
+  .nifty-link-card .nifty-link-card-text {
+    padding-left: 16px;
+    width: 70%;
+    overflow: hidden;
+    padding-right: 14px;
+    padding-bottom: 10px;
+    padding-top: 14px;
+  }
+  
+  .nifty-link-card .nifty-link-card-title {
+    font-size: 14px;
+    line-height: 20px;
+    color: rgb(55, 53, 47);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-height: 30px;
+    width: auto;
+    margin-bottom: 2px;
+  }
+  
+  .nifty-link-card .nifty-link-card-description {
+      font-size: 12px;
+      line-height: 15px;
+      color: rgba(55, 53, 47, 0.65);
+      height: 43px;
+      overflow: hidden;
+      width: 100%;
+      word-wrap: break-word;
+      padding-top: 10px;
+  }
+  
+  .nifty-link-card .nifty-link-href {
+    font-size: 12px;
+    line-height: 16px;
+    color: rgb(55, 53, 47);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-top: 15px;
+  }
+  
+  .nifty-link-icon {
+    vertical-align: middle;
+    position: absolute;
+    left: 15px;
+    position: static;
+    top: 3px;
+    width: 16px;
+    height: 16px;
+    min-width: 16px;
+    margin-right: 3px;
+  }
+  
+  .nifty-link-card-title + .nifty-link-card-description,
+  .nifty-link-card-description + .nifty-link-href {
+      margin-top: -10px;
+  }

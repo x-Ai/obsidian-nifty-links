@@ -1,11 +1,10 @@
 {
-	"id": "sample-plugin",
-	"name": "Sample Plugin",
+	"id": "obsidian-nifty-links",
+	"name": "Nifty Links",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
-	"description": "This is a sample plugin for Obsidian. This plugin demonstrates some of the capabilities of the Obsidian API.",
-	"author": "Obsidian",
-	"authorUrl": "https://obsidian.md",
-	"fundingUrl": "https://obsidian.md/pricing",
+	"description": "Nifty Links: An Obsidian plugin for generating elegant, Notion-styled rich link cards to enhance your note-taking experience.",
+	"author": "x-Ai",
+	"authorUrl": "https://github.com/x-Ai/obsidian-nifty-links",
 	"isDesktopOnly": false
 }
