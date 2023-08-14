@@ -5,7 +5,7 @@
 <div align="center">
   <!-- Platform -->
   <a href="Platform">
-    <img src="https://img.shields.io/badge/Version-1.0.0-green?color=gerrn&style=flat-square" alt="Platform">
+    <img src="https://img.shields.io/badge/Version-1.0.0-green?color=gerrn&style=flat-square" alt="Version">
   </a>
   <!-- License -->
   <a href="LICENSE">
