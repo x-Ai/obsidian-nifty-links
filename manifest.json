@@ -3,8 +3,8 @@
 	"name": "Nifty Links",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
-	"description": "Nifty Links: An Obsidian plugin for generating elegant, Notion-styled rich link cards to enhance your note-taking experience.",
+	"description": "Generate elegant, Notion-style rich link cards to enhance your note-taking experience",
 	"author": "x-Ai",
-	"authorUrl": "https://github.com/x-Ai/obsidian-nifty-links",
+	"authorUrl": "https://github.com/x-Ai",
 	"isDesktopOnly": false
 }

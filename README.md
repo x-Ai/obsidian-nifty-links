@@ -22,11 +22,9 @@
 
 
 <p align="center">！本插件基于<a href="https://github.com/dhamaniasad/obsidian-rich-links">"Rich Links"</a>改进而来 ！</p>
+<p align="center">感谢 <a href="https://www.crestify.com/">Crestify </a>的网页信息提取服务: ---> <code>http://iframely.server.crestify.com/iframely?url=</code><---</p>
 
 <h2 align="center"></h2>
 
 
 <p align="center"><img src="https://github.com/x-Ai/obsidian-nifty-links/assets/5061489/e7a322b9-9fd8-4e3c-bdee-24b3e47bde6d"></p>
-
-
-

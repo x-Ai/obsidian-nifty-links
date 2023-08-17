@@ -49,25 +49,22 @@ import {
 		return urlRegex.test(text);
 	  }
   
-	  urlToIframe(editor) {
+	  async urlToIframe(editor) {
 		let selectedText = editor.somethingSelected()
 			? editor.getSelection().trim()
 			: false;
 		if (selectedText && this.isUrl(selectedText)) {
 			const url = selectedText;
-			ajaxPromise({        
-				url: `http://iframely.server.crestify.com/iframely?url=${url}`,
-			}).then((res) => {
-				const data = JSON.parse(res);
+			try {
+				const response = await requestUrl(`http://iframely.server.crestify.com/iframely?url=${url}`);
+				const data = response.json;
 				let imageLink = data.links.find((value) => value.type.startsWith("image") && value.rel.includes('twitter'));
 				imageLink = imageLink ? imageLink.href : '';
 				let cardTextStyle = imageLink ? "" : ' style="width: 100%;"';
-				let imageContainerHTML = imageLink ? `
-					<div class="nifty-link-image-container">
-						<div class="nifty-link-image" style="background-image: url('${imageLink}')">
-					</div>
-					</div>
-					` : '';
+				let imageContainerHTML = imageLink ? `    <div class="nifty-link-image-container">
+                <div class="nifty-link-image" style="background-image: url('${imageLink}')">
+                </div>
+            </div>` : '';
 				let iconLink = data.links.find((value) => value.type.startsWith("image") && value.rel.includes('icon'));
 				iconLink = iconLink ? iconLink.href : '';
 				editor.replaceSelection(`
@@ -86,8 +83,10 @@ import {
   </div>
   
   `);
-			});
-		}
+			} catch (error) {
+            console.error(error);
+        }
+    }
 		else {
 			new obsidian.Notice("Select a URL to convert to nifty link.");
 		}
