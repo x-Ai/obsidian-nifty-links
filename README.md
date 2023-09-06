@@ -20,8 +20,6 @@
 
   <p align="center">🌟"Nifty Links" -- 精致优雅的 Obsidian 书签插件🌟</p>
 
-
-<p align="center">！本插件基于<a href="https://github.com/dhamaniasad/obsidian-rich-links">"Rich Links"</a>改进而来 ！</p>
 <p align="center">感谢 <a href="https://www.crestify.com/">Crestify </a>提供网页信息提取服务: ---> <code>http://iframely.server.crestify.com/iframely?url=</code><---</p>
 
 <h2 align="center"></h2>
