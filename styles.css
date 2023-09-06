@@ -1,31 +1,40 @@
+.markdown-reading-view .nifty-link-card-container {
+  margin: 1em 0;
+}
+
 .nifty-link-card {
-    border: 1px solid var(--background-modifier-border);
-    margin-right: 0;
-    margin-left: 0;
-    margin-bottom: 23px;
-    border-radius: 3px;
+    border: 1px solid rgb(55, 53, 47, 0.16);
+    border-radius: var(--radius-s);
     width: 100%;
     display: flex;
+    transition: 20ms ease-in 0s;
     align-items: center;
     text-decoration: none !important;
     background-color: var(--background-primary);
     height: 106px;
+
+    &:hover {
+        background: var(--background-modifier-hover);
+        border-color: var(--background-modifier-hover);
+        text-decoration: none;
+    }
   }
   
   .nifty-link-card .nifty-link-image-container {
-      width: 40%;
+      width: 30% !important;
       overflow: hidden;
-      border-right: 1px solid var(--background-modifier-border);
       padding-top: 0px;
       height: 100%;
   }
   
-  .nifty-link-card .nifty-link-image {
+  .nifty-link-card .nifty-link-image-container .nifty-link-image {
     background-position: center center;
     background-size: cover;
     background-repeat: no-repeat;
     background-color: var(--background-secondary);
     height: 100%;
+    object-fit: cover;
+    pointer-events: none;
   }
   
   .nifty-link-card .nifty-link-card-text {
@@ -53,7 +62,7 @@
       font-size: 12px;
       line-height: 15px;
       color: rgba(55, 53, 47, 0.65);
-      height: 43px;
+      height: 42px;
       overflow: hidden;
       width: 100%;
       word-wrap: break-word;
