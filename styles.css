@@ -111,5 +111,8 @@
   
   .theme-dark .nifty-link-card .nifty-link-href {
     color: rgba(255, 255, 255, 0.81);
+
+    &:hover {
+      color: var(--link-external-color-hover)
   }
-  
+}
