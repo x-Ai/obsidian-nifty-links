@@ -61,6 +61,7 @@
   .nifty-link-card .nifty-link-card-description {
       font-size: 12px;
       line-height: 15px;
+      display: flex;
       color: rgba(55, 53, 47, 0.65);
       height: 42px;
       overflow: hidden;
@@ -71,24 +72,24 @@
   
   .nifty-link-card .nifty-link-href {
     font-size: 12px;
+    display: flex;
     line-height: 16px;
     color: rgb(55, 53, 47);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    flex-direction: row;
+    align-items: center;
     padding-top: 15px;
+    &:hover {
+      color: var(--link-external-color-hover)
   }
-  
+}
+
   .nifty-link-icon {
-    vertical-align: middle;
-    position: absolute;
-    left: 15px;
-    position: static;
-    top: 3px;
     width: 16px;
     height: 16px;
-    min-width: 16px;
-    margin-right: 3px;
+    margin: 0 0.5em 0 0 !important;
   }
   
   .nifty-link-card-title + .nifty-link-card-description,
