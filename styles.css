@@ -95,3 +95,20 @@
   .nifty-link-card-description + .nifty-link-href {
       margin-top: -10px;
   }
+
+  .theme-dark .nifty-link-card {
+    border: 1px solid rgba(255, 255, 255, 0.13);
+  }
+  
+  .theme-dark .nifty-link-card .nifty-link-card-title {
+    color: rgba(255, 255, 255, 0.81);
+  }
+  
+  .theme-dark .nifty-link-card .nifty-link-card-description {
+    color: rgba(255, 255, 255, 0.443);
+  }
+  
+  .theme-dark .nifty-link-card .nifty-link-href {
+    color: rgba(255, 255, 255, 0.81);
+  }
+  
