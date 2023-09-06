@@ -28,6 +28,6 @@
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;  - Notion 简约风格
 
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;  - 适配深色模式
-<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;  - 使用 <a href="https://www.crestify.com/">Crestify </a>提供网页信息提取服务: <code>[http://iframely.server.crestify.com/iframely?url=${url}]</code></p>
+<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;  - 使用 <a href="https://www.crestify.com/">Crestify </a>网页信息提取: <code>[http://iframely.server.crestify.com/iframely?url=${url}]</code></p>
 <h2 align="center"></h2>
 <p align="center"><img src="https://github.com/x-Ai/obsidian-nifty-links/assets/5061489/e7a322b9-9fd8-4e3c-bdee-24b3e47bde6d"></p>
