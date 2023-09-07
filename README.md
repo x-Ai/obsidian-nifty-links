@@ -21,7 +21,7 @@
 </div>
 <br>
 
-  <p align="center">🌟"Nifty Links" -- 精致优雅的 Obsidian 书签插件🌟</p>
+  <p align="center">🌟"Nifty Links" -- 精致优雅的 Obsidian 链接卡片插件🌟</p>
 <h2 align="center"></h2>
 
 ### &emsp;&emsp; &emsp;&emsp; 特点
