@@ -15,8 +15,8 @@
     <img src="https://img.shields.io/github/license/x-Ai/obsidian-nifty-links?color=gerrn&style=flat-square" alt="LICENSE">
   </a>
   <!-- ❤︎ -->
-  <a href="❤︎">
-    <img src="https://img.shields.io/badge/❤︎-Notion书签风格-green?color=gerrn&style=flat-square" alt="❤︎">
+  <a href="Obsidia Version">
+    <img src="https://img.shields.io/badge/Support Obsidia Ver-All-green?color=gerrn&style=flat-square" alt="Obsidia Version">
   </a>
 </div>
 <br>
