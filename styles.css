@@ -63,11 +63,11 @@
       line-height: 15px;
       display: flex;
       color: rgba(55, 53, 47, 0.65);
-      height: 42px;
+      height: 40px;
       overflow: hidden;
       width: 100%;
       word-wrap: break-word;
-      padding-top: 10px;
+      padding-top: 8px;
   }
   
   .nifty-link-card .nifty-link-href {
