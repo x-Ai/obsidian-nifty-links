@@ -50,23 +50,19 @@ export default class ObsidianNiftyLinksPlugin extends Plugin {
 			let description = data.description || "";
 			const imageLink = data.image;
 			const iconLink = data.favicon;
-
-			// 使用.replace(/\s{3,}/g, ' ').trim()处理title和description
+			
 			title = title.replace(/\s{3,}/g, ' ').trim();
 			description = description.replace(/\s{3,}/g, ' ').trim();
 
 			const cardTextStyle = imageLink ? "" : ' style="width: 100%;"';
 
-			// 当iconLink存在时才插入图标，确保不会尝试加载未定义的图标
 			const iconHTML = iconLink ? `<img class="nifty-link-icon" src="${iconLink}">` : '';
 
-			// 构建图片容器的HTML，如果有imageLink
 			const imageContainerHTML = imageLink ? `
 		  <div class="nifty-link-image-container">
 			<div class="nifty-link-image" style="background-image: url('${imageLink}')"></div>
 		  </div>` : '';
 
-			// 构建最终的HTML结构
 			const html = `
 		  <div class="nifty-link-card-container">
 			<a class="nifty-link-card" href="${url}" target="_blank">
@@ -111,7 +107,6 @@ export default class ObsidianNiftyLinksPlugin extends Plugin {
 				let iconLink = data.links.find((value) => value.type.startsWith("image") && value.rel.includes('icon'));
 				iconLink = iconLink ? iconLink.href : '';
 
-				// 根据是否有图片链接调整Markdown输出
 				let markdownLink = `\n\`\`\`NiftyLinks
 url: ${url}
 title: ${data.meta.title || ""}
