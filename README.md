@@ -7,15 +7,15 @@
 
 <div align="center">
   <!-- Platform -->
-  <a href="Platform">
+  <a>
     <img src="https://img.shields.io/badge/Version-1.2.0-green?color=gerrn&style=flat-square" alt="Version">
   </a>
   <!-- License -->
-  <a href="LICENSE">
+  <a>
     <img src="https://img.shields.io/github/license/x-Ai/obsidian-nifty-links?color=gerrn&style=flat-square" alt="LICENSE">
   </a>
   <!-- ❤︎ -->
-  <a href="Obsidia Version">
+  <a>
     <img src="https://img.shields.io/badge/Support Obsidia Ver-All-green?color=gerrn&style=flat-square" alt="Obsidia Version">
   </a>
 </div>
