@@ -50,7 +50,7 @@ export default class ObsidianNiftyLinksPlugin extends Plugin {
 			let description = data.description || "";
 			const imageLink = data.image;
 			const iconLink = data.favicon;
-			
+
 			title = title.replace(/\s{3,}/g, ' ').trim();
 			description = description.replace(/\s{3,}/g, ' ').trim();
 
@@ -92,42 +92,51 @@ export default class ObsidianNiftyLinksPlugin extends Plugin {
 		const urlRegex = new RegExp("^(http:\\/\\/www\\.|https:\\/\\/www\\.|http:\\/\\/|https:\\/\\/)?[a-z0-9]+([\\-.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$");
 		return urlRegex.test(text);
 	}
-
+	
 	async urlToMarkdown(editor) {
 		let selectedText = editor.somethingSelected()
 			? editor.getSelection().trim()
 			: false;
 		if (selectedText && this.isUrl(selectedText)) {
-			const url = selectedText;
+			let url = selectedText;
+			let api = "";
+			const specialDomains = ["medium.com"];
+			let isSpecialDomain = specialDomains.some(domain => url.includes(domain));
+			if (isSpecialDomain) {
+				api = `https://api.microlink.io/?url=${url}`;
+			} else {
+				api = `http://iframely.server.crestify.com/iframely?url=${url}`;
+			}
+
 			try {
-				const response = await requestUrl({ url: `http://iframely.server.crestify.com/iframely?url=${url}` });
-				const data = response.json;
-				let imageLink = data.links.find((value) => value.type.startsWith("image") && value.rel.includes('twitter'));
-				imageLink = imageLink ? imageLink.href : '';
-				let iconLink = data.links.find((value) => value.type.startsWith("image") && value.rel.includes('icon'));
-				iconLink = iconLink ? iconLink.href : '';
+				let response = await requestUrl({ url: api });
+				let data = isSpecialDomain ? response.json.data : response.json;
+				if (!isSpecialDomain && data.code === 403) {
+					api = `https://api.microlink.io/?url=${url}`;
+					response = await requestUrl({ url: api });
+					data = response.json.data;
+					isSpecialDomain = true;
+				}
+				const imageLink = isSpecialDomain ? (data.image ? data.image.url : '') : data.links.find((value) => value.type.startsWith("image") && value.rel.includes('twitter'))?.href || '';
+				const iconLink = isSpecialDomain ? (data.logo ? data.logo.url : '') : data.links.find((value) => value.type.startsWith("image") && value.rel.includes('icon'))?.href || '';
 
 				let markdownLink = `\n\`\`\`NiftyLinks
-url: ${url}
-title: ${data.meta.title || ""}
-description: ${data.meta.description || ""}
+url: ${isSpecialDomain ? (data.url || url) : url}
+title: ${isSpecialDomain ? data.title : data.meta.title || ""}
+description: ${isSpecialDomain ? data.description : data.meta.description || ""}
 favicon: ${iconLink}
 ${imageLink ? `image: ${imageLink}` : ""}
 \`\`\`\n`;
 
-
 				editor.replaceSelection(markdownLink);
-				const cursorPos = editor.getCursor();
-				editor.setCursor(cursorPos.line + 1, 0);
 			} catch (error) {
 				console.error(error);
+				new Notice("Failed to fetch data.");
 			}
-		}
-		else {
+		} else {
 			new Notice("Select a URL to convert to nifty link.");
 		}
 	}
-
 
 	async loadSettings() {
 		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
