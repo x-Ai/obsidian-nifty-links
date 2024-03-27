@@ -8,7 +8,7 @@
 <div align="center">
   <!-- Platform -->
   <a>
-    <img src="https://img.shields.io/badge/Version-1.2.0-green?color=gerrn&style=flat-square" alt="Version">
+    <img src="https://img.shields.io/badge/Version-1.3.0-green?color=gerrn&style=flat-square" alt="Version">
   </a>
   <!-- License -->
   <a>
