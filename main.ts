@@ -2,10 +2,9 @@ import {
     App,
     Editor,
     MarkdownView,
-    Notice,
     Plugin,
     moment,
-    requestUrl
+    requestUrl,
 } from "obsidian";
 
 interface ObsidianNiftyLinksPluginSettings {
@@ -54,18 +53,35 @@ export default class ObsidianNiftyLinksPlugin extends Plugin {
 
 	async loadTranslations() {
 		const lang = moment.locale();
+		let fileName = 'en-US.json';
+
+		if (lang.toLowerCase().startsWith('zh')) {
+			fileName = 'zh-CN.json';
+		}
+
 		try {
 			const content = await (this.app.vault as any).adapter.read(
-				`${this.manifest.dir}/locales/${lang}.json`
+				`${this.manifest.dir}/${fileName}`
 			);
 			this.translations = JSON.parse(content);
 		} catch (error) {
-			console.error(`Failed to load translations for ${lang}`, error);
+			if (fileName !== 'en-US.json') {
+				try {
+					const fallbackContent = await (this.app.vault as any).adapter.read(
+						`${this.manifest.dir}/en-US.json`
+					);
+					this.translations = JSON.parse(fallbackContent);
+				} catch (fallbackError) {
+					this.translations = {};
+				}
+			} else {
+				this.translations = {};
+			}
 		}
 	}
 
+
 	async onload() {
-		console.log("loading plugin");
 
 		await this.loadSettings();
 		await this.loadTranslations();
@@ -181,12 +197,9 @@ ${imageLink ? `image: ${imageLink}` : ""}
             editor.replaceSelection(markdownLink);
             return true;
         } catch (error) {
-            console.error(error);
-            new Notice(await this.t("Failed to fetch data."));
             return false;
         }
     } else {
-        new Notice(await this.t("Select a URL to convert to nifty link."));
         return false;
     }
 	}
