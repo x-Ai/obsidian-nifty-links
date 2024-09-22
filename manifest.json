@@ -8,7 +8,7 @@
 	"authorUrl": "https://github.com/x-Ai",
 	"isDesktopOnly": false,
 	"locales": {
-        "en": "locales/en.json",
-        "zh-CN": "locales/zh-CN.json"
+        "en-US": "en-US.json",
+        "zh-CN": "zh-CN.json"
     }
 }
