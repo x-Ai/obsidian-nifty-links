@@ -6,9 +6,5 @@
 	"description": "Generate elegant, Notion-style rich link cards to enhance your note-taking experience",
 	"author": "x-Ai",
 	"authorUrl": "https://github.com/x-Ai",
-	"isDesktopOnly": false,
-	"locales": {
-        "en-US": "en-US.json",
-        "zh-CN": "zh-CN.json"
-    }
+	"isDesktopOnly": false
 }

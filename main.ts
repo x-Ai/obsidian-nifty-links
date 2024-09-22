@@ -7,6 +7,20 @@ import {
     requestUrl,
 } from "obsidian";
 
+import en from "./locale/en";
+import zhCN from "./locale/zh-cn";
+
+const localeMap: { [k: string]: Partial<typeof en> } = {
+  en,
+  "zh-cn": zhCN,
+};
+
+const locale = localeMap[moment.locale()];
+
+export function t(str: keyof typeof en): string {
+  return (locale && locale[str]) || en[str];
+}
+
 interface ObsidianNiftyLinksPluginSettings {
     fixedWidth: boolean;
 }
@@ -31,8 +45,8 @@ class NiftyLinksSettingTab extends PluginSettingTab {
         containerEl.empty();
 
         new Setting(containerEl)
-            .setName(this.plugin.t('Fixed width'))
-            .setDesc(this.plugin.t('Set the width of Nifty Links cards to a fixed 700px'))
+            .setName(t('Fixed width'))
+            .setDesc(t('Set the width of Nifty Links cards to a fixed 700px'))
             .addToggle(toggle => toggle
                 .setValue(this.plugin.settings.fixedWidth)
                 .onChange(async (value) => {
@@ -45,46 +59,10 @@ class NiftyLinksSettingTab extends PluginSettingTab {
 
 export default class ObsidianNiftyLinksPlugin extends Plugin {
     settings: ObsidianNiftyLinksPluginSettings;
-    translations: {[key: string]: string} = {};
-
-	t(key: string): string {
-		return this.translations[key] || key;
-	}
-
-	async loadTranslations() {
-		const lang = moment.locale();
-		let fileName = 'en-US.json';
-
-		if (lang.toLowerCase().startsWith('zh')) {
-			fileName = 'zh-CN.json';
-		}
-
-		try {
-			const content = await (this.app.vault as any).adapter.read(
-				`${this.manifest.dir}/${fileName}`
-			);
-			this.translations = JSON.parse(content);
-		} catch (error) {
-			if (fileName !== 'en-US.json') {
-				try {
-					const fallbackContent = await (this.app.vault as any).adapter.read(
-						`${this.manifest.dir}/en-US.json`
-					);
-					this.translations = JSON.parse(fallbackContent);
-				} catch (fallbackError) {
-					this.translations = {};
-				}
-			} else {
-				this.translations = {};
-			}
-		}
-	}
-
 
 	async onload() {
 
 		await this.loadSettings();
-		await this.loadTranslations();
 
 		this.addSettingTab(new NiftyLinksSettingTab(this.app, this));
 
@@ -94,7 +72,7 @@ export default class ObsidianNiftyLinksPlugin extends Plugin {
 				if (selection && this.isUrl(selection.trim())) {
 					menu.addItem((item) => {
 						item
-							.setTitle(this.t("Convert to Nifty Link"))
+							.setTitle(t("Convert to Nifty Link"))
 							.setIcon("link")
 							.onClick(async () => {
 								await this.urlToMarkdown(editor);
