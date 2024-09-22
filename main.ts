@@ -1,42 +1,92 @@
 import {
-	App,
-	Editor,
-	MarkdownView,
-	Notice,
-	Plugin,
-	requestUrl
+    App,
+    Editor,
+    MarkdownView,
+    Notice,
+    Plugin,
+    moment,
+    requestUrl
 } from "obsidian";
 
-interface ObsidianNiftyLinksPluginSettings { }
+interface ObsidianNiftyLinksPluginSettings {
+    fixedWidth: boolean;
+}
 
-const DEFAULT_SETTINGS: ObsidianNiftyLinksPluginSettings = {};
+const DEFAULT_SETTINGS: ObsidianNiftyLinksPluginSettings = {
+    fixedWidth: false
+};
+
+import { PluginSettingTab, Setting } from "obsidian";
+
+class NiftyLinksSettingTab extends PluginSettingTab {
+    plugin: ObsidianNiftyLinksPlugin;
+
+    constructor(app: App, plugin: ObsidianNiftyLinksPlugin) {
+        super(app, plugin);
+        this.plugin = plugin;
+    }
+
+    async display(): Promise<void> {
+        const { containerEl } = this;
+
+        containerEl.empty();
+
+        new Setting(containerEl)
+            .setName(this.plugin.t('Fixed width'))
+            .setDesc(this.plugin.t('Set the width of Nifty Links cards to a fixed 700px'))
+            .addToggle(toggle => toggle
+                .setValue(this.plugin.settings.fixedWidth)
+                .onChange(async (value) => {
+                    this.plugin.settings.fixedWidth = value;
+                    await this.plugin.saveSettings();
+                    this.plugin.updateStyles();
+                }));
+    }
+}
 
 export default class ObsidianNiftyLinksPlugin extends Plugin {
-	settings: ObsidianNiftyLinksPluginSettings;
+    settings: ObsidianNiftyLinksPluginSettings;
+    translations: {[key: string]: string} = {};
+
+	t(key: string): string {
+		return this.translations[key] || key;
+	}
+
+	async loadTranslations() {
+		const lang = moment.locale();
+		try {
+			const content = await (this.app.vault as any).adapter.read(
+				`${this.manifest.dir}/locales/${lang}.json`
+			);
+			this.translations = JSON.parse(content);
+		} catch (error) {
+			console.error(`Failed to load translations for ${lang}`, error);
+		}
+	}
 
 	async onload() {
 		console.log("loading plugin");
 
 		await this.loadSettings();
+		await this.loadTranslations();
 
-		this.addRibbonIcon("link", "Nifty Links", () => {
-			let activeView = this.app.workspace.getActiveViewOfType(MarkdownView);
-			if (activeView) {
-				let editor = activeView.editor;
-				this.urlToMarkdown(editor);
-			}
-		});
+		this.addSettingTab(new NiftyLinksSettingTab(this.app, this));
 
-		this.addCommand({
-			id: "create-nifty-links",
-			name: "Create Nifty Link",
-			editorCheckCallback: (checking: boolean, editor: Editor) => {
-				if (!checking) {
-					this.urlToMarkdown(editor);
+		this.registerEvent(
+			this.app.workspace.on("editor-menu", (menu, editor: Editor) => {
+				const selection = editor.getSelection();
+				if (selection && this.isUrl(selection.trim())) {
+					menu.addItem((item) => {
+						item
+							.setTitle(this.t("Convert to Nifty Link"))
+							.setIcon("link")
+							.onClick(async () => {
+								await this.urlToMarkdown(editor);
+							});
+					});
 				}
-				return true;
-			},
-		});
+			})
+		);
 
 		this.registerMarkdownCodeBlockProcessor("NiftyLinks", (source, el, ctx) => {
 			const data = source.split('\n').reduce((acc, line) => {
@@ -81,7 +131,7 @@ export default class ObsidianNiftyLinksPlugin extends Plugin {
 			el.innerHTML = html;
 		});
 
-
+		this.updateStyles();
 	}
 
 	onunload() {
@@ -92,7 +142,7 @@ export default class ObsidianNiftyLinksPlugin extends Plugin {
 		const urlRegex = new RegExp("^(http:\\/\\/www\\.|https:\\/\\/www\\.|http:\\/\\/|https:\\/\\/)?[a-z0-9]+([\\-.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$");
 		return urlRegex.test(text);
 	}
-	
+
 	async urlToMarkdown(editor) {
 		let selectedText = editor.somethingSelected()
 			? editor.getSelection().trim()
@@ -128,14 +178,17 @@ favicon: ${iconLink}
 ${imageLink ? `image: ${imageLink}` : ""}
 \`\`\`\n`;
 
-				editor.replaceSelection(markdownLink);
-			} catch (error) {
-				console.error(error);
-				new Notice("Failed to fetch data.");
-			}
-		} else {
-			new Notice("Select a URL to convert to nifty link.");
-		}
+            editor.replaceSelection(markdownLink);
+            return true;
+        } catch (error) {
+            console.error(error);
+            new Notice(await this.t("Failed to fetch data."));
+            return false;
+        }
+    } else {
+        new Notice(await this.t("Select a URL to convert to nifty link."));
+        return false;
+    }
 	}
 
 	async loadSettings() {
@@ -144,5 +197,9 @@ ${imageLink ? `image: ${imageLink}` : ""}
 
 	async saveSettings() {
 		await this.saveData(this.settings);
+	}
+
+	updateStyles() {
+		document.body.classList.toggle('nifty-links-fixed-width', this.settings.fixedWidth);
 	}
 }

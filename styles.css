@@ -19,14 +19,14 @@
         text-decoration: none;
     }
   }
-  
+
   .nifty-link-card .nifty-link-image-container {
       width: 30% !important;
       overflow: hidden;
       padding-top: 0px;
       height: 100%;
   }
-  
+
   .nifty-link-card .nifty-link-image-container .nifty-link-image {
     background-position: center center;
     background-size: cover;
@@ -36,7 +36,7 @@
     object-fit: cover;
     pointer-events: none;
   }
-  
+
   .nifty-link-card .nifty-link-card-text {
     padding-left: 16px;
     width: 70%;
@@ -45,7 +45,7 @@
     padding-bottom: 10px;
     padding-top: 14px;
   }
-  
+
   .nifty-link-card .nifty-link-card-title {
     font-size: 14px;
     line-height: 20px;
@@ -57,7 +57,7 @@
     width: auto;
     margin-bottom: 2px;
   }
-  
+
   .nifty-link-card .nifty-link-card-description {
       font-size: 12px;
       line-height: 15px;
@@ -69,7 +69,7 @@
       word-wrap: break-word;
       padding-top: 8px;
   }
-  
+
   .nifty-link-card .nifty-link-href {
     font-size: 12px;
     display: flex;
@@ -91,7 +91,7 @@
     height: 16px;
     margin: 0 0.5em 0 0 !important;
   }
-  
+
   .nifty-link-card-title + .nifty-link-card-description,
   .nifty-link-card-description + .nifty-link-href {
       margin-top: -10px;
@@ -100,19 +100,52 @@
   .theme-dark .nifty-link-card {
     border: 1px solid rgba(255, 255, 255, 0.13);
   }
-  
+
   .theme-dark .nifty-link-card .nifty-link-card-title {
     color: rgba(255, 255, 255, 0.81);
   }
-  
+
   .theme-dark .nifty-link-card .nifty-link-card-description {
     color: rgba(255, 255, 255, 0.443);
   }
-  
+
   .theme-dark .nifty-link-card .nifty-link-href {
     color: rgba(255, 255, 255, 0.81);
 
     &:hover {
       color: var(--link-external-color-hover)
   }
+}
+
+
+body.nifty-links-fixed-width .markdown-source-view.mod-cm6 .cm-embed-block:has(.nifty-link-card-container),
+body.nifty-links-fixed-width .markdown-preview-view .cm-preview-code-block:has(.nifty-link-card-container),
+body.nifty-links-fixed-width .markdown-reading-view .nifty-link-card-container {
+  max-width: 700px;
+  width: 700px;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+body.nifty-links-fixed-width .nifty-link-card-container,
+body.nifty-links-fixed-width .nifty-link-card {
+  width: 100%;
+}
+
+body.nifty-links-fixed-width .cm-preview-code-block .nifty-link-card-container,
+body.nifty-links-fixed-width .markdown-source-view.mod-cm6 .cm-embed-block .nifty-link-card-container,
+body.nifty-links-fixed-width .markdown-reading-view .nifty-link-card-container {
+  display: flex;
+  justify-content: center;
+}
+
+.markdown-source-view.mod-cm6 .cm-embed-block:has(.nifty-link-card-container),
+.markdown-preview-view .cm-preview-code-block:has(.nifty-link-card-container),
+.markdown-reading-view .nifty-link-card-container {
+  width: 100%;
+}
+
+.nifty-link-card {
+  max-width: 100%;
+  box-sizing: border-box;
 }
