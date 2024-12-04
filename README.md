@@ -30,5 +30,5 @@
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;  - 适配深色模式
 <p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;  - 使用 <a href="https://www.crestify.com/">Crestify </a>、<a href="https://microlink.io/">Microlink </a>提取网页信息</p>
 <h2 align="center"></h2>
-<p align="center"><img src="https://github.com/x-Ai/obsidian-nifty-links/assets/5061489/3ff256d1-9f1b-4a5f-9ab7-4f1012c90981"></p>
-
+<p align="center"><img src="https://github.com/x-Ai/obsidian-nifty-links/assets/5061489/3ff256d1-9f1b-4a5f-9ab7-4f1012c90981"><img width="965" src="https://github.com/user-attachments/assets/cbbfd92a-5a3c-41b9-a97c-dc583ba4838b" />
+</p>
